@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>cc.becurious</groupId>
+    <artifactId>spring3-template</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>spring3-template</name>
+    <description>spring3-template</description>
+
+    <properties>
+        <template.version>0.0.1-SNAPSHOT</template.version>
+        <java.version>21</java.version>
+        <spring.version>3.2.2</spring.version>
+        <maven.compiler.plugin.version>3.12.1</maven.compiler.plugin.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.resources.plugin.version>3.3.1</maven.resources.plugin.version>
+        <json.path.version>2.9.0</json.path.version>
+        <commons.io.version>2.15.1</commons.io.version>
+        <commons.lang3.version>3.14.0</commons.lang3.version>
+        <springdoc.version>2.3.0</springdoc.version>
+        <log4j2.version>2.13.3</log4j2.version>
+        <mybatis.version>3.0.3</mybatis.version>
+        <hikari.version>5.1.0</hikari.version>
+        <mysql.version>8.0.33</mysql.version>
+        <fastjson.version>2.0.46</fastjson.version>
+        <lombok.version>1.18.30</lombok.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.jayway.jsonpath</groupId>
+                <artifactId>json-path</artifactId>
+                <version>${json.path.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons.io.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons.lang3.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-ui -->
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+                <version>${springdoc.version}</version>
+            </dependency>
+
+
+            <!--            <dependency>-->
+<!--                <groupId>com.alibaba.fastjson2</groupId>-->
+<!--                <artifactId>fastjson2</artifactId>-->
+<!--                <version>2.</version>-->
+<!--            </dependency>-->
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-log4j2</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>${mybatis.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-jdbc</artifactId>
+            </dependency>
+
+            <dependency>
+                <groupId>com.zaxxer</groupId>
+                <artifactId>HikariCP</artifactId>
+                <version>${hikari.version}</version>
+            </dependency>
+
+            <!-- Mysql驱动包 -->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba.fastjson2</groupId>
+                <artifactId>fastjson2</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+
+
+
+
+            <dependency>
+                <groupId>cc.becurious</groupId>
+                <artifactId>spring3-framework</artifactId>
+                <version>${template.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cc.becurious</groupId>
+                <artifactId>spring3-common</artifactId>
+                <version>${template.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cc.becurious</groupId>
+                <artifactId>spring3-system</artifactId>
+                <version>${template.version}</version>
+            </dependency>
+
+
+
+
+        </dependencies>
+    </dependencyManagement>
+
+    <modules>
+        <module>spring3-admin</module>
+        <module>spring3-framework</module>
+        <module>spring3-common</module>
+        <module>spring3-system</module>
+    </modules>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <profileActive>dev</profileActive>
+            </properties>
+<!--            todo:没明白-->
+<!--            <activation>-->
+<!--                <activeByDefault>true</activeByDefault>-->
+<!--                <property>-->
+<!--                    <name>env</name>-->
+<!--                    <value>dev</value>-->
+<!--                </property>-->
+<!--            </activation>-->
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <profileActive>prod</profileActive>
+            </properties>
+<!--            <activation>-->
+<!--                <activeByDefault>true</activeByDefault>-->
+<!--                <property>-->
+<!--                    <name>env</name>-->
+<!--                    <value>dev</value>-->
+<!--                </property>-->
+<!--            </activation>-->
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <profileActive>test</profileActive>
+            </properties>
+<!--            <activation>-->
+<!--                <activeByDefault>true</activeByDefault>-->
+<!--                <property>-->
+<!--                    <name>env</name>-->
+<!--                    <value>dev</value>-->
+<!--                </property>-->
+<!--            </activation>-->
+        </profile>
+    </profiles>
+
+    <packaging>pom</packaging>
+
+    <build>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.plugin.version}</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${maven.resources.plugin.version}</version>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <delimiters>
+                        <delimiter>@</delimiter>
+                    </delimiters>
+                    <useDefaultDelimiters>false</useDefaultDelimiters>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <repositories>
+        <repository>
+            <id>public</id>
+            <name>aliyun nexus</name>
+            <url>https://maven.aliyun.com/repository/public</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>public</id>
+            <name>aliyun nexus</name>
+            <url>https://maven.aliyun.com/repository/public</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
+
+</project>
