@@ -1,8 +1,12 @@
 package cc.becurious.system.mapper;
 
-import cc.becurious.system.domain.User;
+import cc.becurious.system.domain.SysUser;
 
 public interface UserMapper {
 
-    public User selectUserById(Long id);
+    public SysUser selectUserById(Long id);
+
+    SysUser selectUserByUserName(String userName);
+
+    Long updateUser(SysUser sysUser);
 }

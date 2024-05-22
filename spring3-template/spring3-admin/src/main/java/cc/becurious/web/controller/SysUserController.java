@@ -1,24 +1,23 @@
 package cc.becurious.web.controller;
 
-import cc.becurious.system.domain.User;
-import cc.becurious.system.service.UserService;
+import cc.becurious.system.domain.SysUser;
+import cc.becurious.system.service.IUserService;
 import jakarta.annotation.Resource;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/sys")
+public class SysUserController {
 
     @Resource
-    private UserService userService;
+    private IUserService userService;
 
 
     @GetMapping("/{userId}")
-    public User getUser( @PathVariable("userId") Long userId) {
+    public SysUser getUser(@PathVariable("userId") Long userId) {
 
         return userService.selectUserById(userId);
     }

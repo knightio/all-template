@@ -11,7 +11,8 @@
     <properties>
         <template.version>0.0.1-SNAPSHOT</template.version>
         <java.version>21</java.version>
-        <spring.version>3.2.2</spring.version>
+        <spring.version>3.2.4</spring.version>
+        <spring-framework.version>6.1.7</spring-framework.version>
         <maven.compiler.plugin.version>3.12.1</maven.compiler.plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.resources.plugin.version>3.3.1</maven.resources.plugin.version>
@@ -25,10 +26,20 @@
         <mysql.version>8.0.33</mysql.version>
         <fastjson.version>2.0.46</fastjson.version>
         <lombok.version>1.18.30</lombok.version>
+        <jjwt.version>0.12.5</jjwt.version>
+        <redis.version>3.2.2</redis.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-framework-bom</artifactId>
+                <version>${spring-framework.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
@@ -65,12 +76,6 @@
             </dependency>
 
 
-            <!--            <dependency>-->
-<!--                <groupId>com.alibaba.fastjson2</groupId>-->
-<!--                <artifactId>fastjson2</artifactId>-->
-<!--                <version>2.</version>-->
-<!--            </dependency>-->
-
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-log4j2</artifactId>
@@ -82,11 +87,6 @@
                 <artifactId>mybatis-spring-boot-starter</artifactId>
                 <version>${mybatis.version}</version>
             </dependency>
-
-<!--            <dependency>-->
-<!--                <groupId>org.springframework.boot</groupId>-->
-<!--                <artifactId>spring-boot-starter-data-jdbc</artifactId>-->
-<!--            </dependency>-->
 
             <dependency>
                 <groupId>com.zaxxer</groupId>
@@ -101,6 +101,32 @@
                 <version>${mysql.version}</version>
             </dependency>
 
+            <!-- Token生成与解析-->
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-api</artifactId>
+                <version>${jjwt.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-impl</artifactId>
+                <version>${jjwt.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-jackson</artifactId> <!-- or jjwt-gson if Gson is preferred -->
+                <version>${jjwt.version}</version>
+            </dependency>
+
+            <!-- redis 缓存操作 -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-redis</artifactId>
+                <version>${redis.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>com.alibaba.fastjson2</groupId>
                 <artifactId>fastjson2</artifactId>
@@ -113,8 +139,6 @@
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
             </dependency>
-
-
 
 
             <dependency>
@@ -135,9 +159,6 @@
                 <version>${template.version}</version>
             </dependency>
 
-
-
-
         </dependencies>
     </dependencyManagement>
 
@@ -155,13 +176,9 @@
                 <profileActive>dev</profileActive>
             </properties>
 <!--            todo:没明白-->
-<!--            <activation>-->
-<!--                <activeByDefault>true</activeByDefault>-->
-<!--                <property>-->
-<!--                    <name>env</name>-->
-<!--                    <value>dev</value>-->
-<!--                </property>-->
-<!--            </activation>-->
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
         </profile>
         <profile>
             <id>prod</id>
@@ -190,18 +207,31 @@
 <!--            </activation>-->
         </profile>
     </profiles>
-
     <packaging>pom</packaging>
 
     <build>
 
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
+<!--        <resources>-->
+<!--            <resource>-->
+<!--                <directory>src/main/resources</directory>-->
+<!--                <filtering>true</filtering>-->
+<!--            </resource>-->
+<!--        </resources>-->
         <plugins>
+<!--            <plugin>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
+<!--&lt;!&ndash;                <configuration>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <fork>true</fork> &lt;!&ndash; 如果没有该配置，devtools不会生效 &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;                </configuration>&ndash;&gt;-->
+<!--&lt;!&ndash;                <executions>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <execution>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <goals>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <goal>repackage</goal>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </goals>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </execution>&ndash;&gt;-->
+<!--&lt;!&ndash;                </executions>&ndash;&gt;-->
+<!--            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -212,18 +242,18 @@
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>${maven.resources.plugin.version}</version>
-                <configuration>
-                    <encoding>${project.build.sourceEncoding}</encoding>
-                    <delimiters>
-                        <delimiter>@</delimiter>
-                    </delimiters>
-                    <useDefaultDelimiters>false</useDefaultDelimiters>
-                </configuration>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-resources-plugin</artifactId>-->
+<!--                <version>${maven.resources.plugin.version}</version>-->
+<!--                <configuration>-->
+<!--                    <encoding>${project.build.sourceEncoding}</encoding>-->
+<!--                    <delimiters>-->
+<!--                        <delimiter>@</delimiter>-->
+<!--                    </delimiters>-->
+<!--                    <useDefaultDelimiters>false</useDefaultDelimiters>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
         </plugins>
     </build>
 

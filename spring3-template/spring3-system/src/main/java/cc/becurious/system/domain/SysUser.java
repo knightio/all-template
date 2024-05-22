@@ -3,10 +3,17 @@ package cc.becurious.system.domain;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 @Builder
-public class User {
+public class SysUser {
 
     Long id;
-    String name;
+    String username;
+    String password;
+    Date loginDate;
+
 }
+
+
